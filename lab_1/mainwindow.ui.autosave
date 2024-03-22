@@ -21,25 +21,17 @@
     <item row="0" column="0">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="styleSheet">
-       <string notr="true">background-color: white;</string>
+       <string notr="true">background-color: rgb(255, 207, 207);</string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="page_3">
        <property name="styleSheet">
         <string notr="true">background-color: white;</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_2">
-        <item row="2" column="0">
-         <widget class="QListWidget" name="listWidget">
-          <property name="styleSheet">
-           <string notr="true">background-color: white;
-color: black;</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
+        <item row="0" column="0">
          <widget class="QLineEdit" name="lineEdit">
           <property name="font">
            <font>
@@ -50,8 +42,13 @@ color: black;</string>
            <string notr="true">background-color: white;
 color: black;</string>
           </property>
-          <property name="text">
-           <string>Поиск по учетным записям</string>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QListWidget" name="listWidget">
+          <property name="styleSheet">
+           <string notr="true">background-color: white;
+color: black;</string>
           </property>
          </widget>
         </item>
@@ -59,18 +56,18 @@ color: black;</string>
       </widget>
       <widget class="QWidget" name="page_4">
        <layout class="QGridLayout" name="gridLayout_3">
-        <item row="4" column="1">
-         <widget class="QLabel" name="incorrectPasswordLabel">
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="lineEdit_2">
           <property name="styleSheet">
-           <string notr="true">color: red</string>
-          </property>
-          <property name="text">
-           <string>Неверный пароль</string>
+           <string notr="true">background-color: rgb(255, 255, 255)</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="3">
-         <spacer name="horizontalSpacer_2">
+        <item row="2" column="0">
+         <spacer name="horizontalSpacer">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -82,37 +79,8 @@ color: black;</string>
           </property>
          </spacer>
         </item>
-        <item row="0" column="1">
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>225</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="2" column="1">
-         <widget class="QLineEdit" name="lineEdit_2"/>
-        </item>
-        <item row="5" column="1">
-         <spacer name="verticalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>224</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="2" column="0">
-         <spacer name="horizontalSpacer">
+        <item row="2" column="3">
+         <spacer name="horizontalSpacer_2">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -137,6 +105,45 @@ color: black;</string>
           </property>
          </widget>
         </item>
+        <item row="4" column="1">
+         <widget class="QLabel" name="incorrectPasswordLabel">
+          <property name="styleSheet">
+           <string notr="true">color: red</string>
+          </property>
+          <property name="text">
+           <string>Неверный пароль</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>225</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="5" column="1">
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>224</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
         <item row="3" column="1">
          <widget class="QPushButton" name="okButton">
           <property name="text">
@@ -149,6 +156,16 @@ color: black;</string>
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>26</height>
+    </rect>
+   </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

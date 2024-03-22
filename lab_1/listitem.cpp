@@ -17,7 +17,7 @@ ListItem::ListItem(QString site, QString login_encrypted, QString password_encry
     ui->copyLoginButton->setText("******");
     ui->copyPasswordButton->setText("******");
 
-    QPixmap pix(":/res/img/keys.png");
+    QPixmap pix(":/res/img/key.png");
     int w = ui->iconKeys->width();
     int h = ui->iconKeys->height();
 
@@ -28,6 +28,7 @@ ListItem::~ListItem()
 {
     delete ui;
 }
+
 
 
 void ListItem::on_copyLoginButton_clicked()

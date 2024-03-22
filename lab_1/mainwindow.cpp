@@ -90,8 +90,8 @@ void MainWindow::filterListItems(const QString &searchStrings)
     }
 }
 
-//password  6060
-//key = 060e33205a731400c2eb92bc12cf921a4e44cf1851d216f144337dd6ec5350a7
+//password  0405
+//key = 05744ee6ac5e4d4d6fe17c3a30ff222ac662743a1753c992914ca8a034ae9f66
 
 int MainWindow::decryptQByteArray(const QByteArray& encryptedBytes, QByteArray& decryptedBytes, unsigned char *key)
 {
