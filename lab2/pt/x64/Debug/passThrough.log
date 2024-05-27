@@ -1,0 +1,47 @@
+﻿  Building 'passThrough' with toolset 'WindowsKernelModeDriver10.0' and the 'Universal' target platform.
+  Stamping x64\Debug\passThrough.inf
+  Stamping [Version] section with DriverVer=05/06/2024,19.56.29.349
+D:\Education\Education4\enc\lab2\pt\passThrough.inf(8-8): warning 1324: [Version] section should specify PnpLockdown=1 to prevent external apps from modifying installed driver files.
+D:\Education\Education4\enc\lab2\pt\passThrough.inf(74-74): warning 1205: Section [MiniFilter.DriverFiles] referenced from DelFiles and CopyFiles directive.
+  aes.c
+D:\Education\Education4\enc-EWDS\Program Files\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.31.31103\include\vcruntime.h(61,26): warning C4083: expected ')'; found identifier '_VCRUNTIME_DISABLED_WARNINGS'
+D:\Education\Education4\enc-EWDS\Program Files\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.31.31103\include\vcruntime.h(111,1): warning C4005: '_CRT_STRINGIZE': macro redefinition
+D:\Education\Education4\enc-EWDS\Program Files\Windows Kits\10\Include\10.0.22621.0\km\crt\crtdefs.h(85): message : see previous definition of '_CRT_STRINGIZE'
+D:\Education\Education4\enc-EWDS\Program Files\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.31.31103\include\vcruntime.h(114,1): warning C4005: '_CRT_WIDE': macro redefinition
+D:\Education\Education4\enc-EWDS\Program Files\Windows Kits\10\Include\10.0.22621.0\km\crt\crtdefs.h(88): message : see previous definition of '_CRT_WIDE'
+D:\Education\Education4\enc-EWDS\Program Files\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.31.31103\include\vcruntime.h(155,1): warning C4005: '__CRTDECL': macro redefinition
+D:\Education\Education4\enc-EWDS\Program Files\Windows Kits\10\Include\10.0.22621.0\km\crt\crtdefs.h(640): message : see previous definition of '__CRTDECL'
+D:\Education\Education4\enc-EWDS\Program Files\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.31.31103\include\stdint.h(16,26): warning C4083: expected ')'; found identifier '_VCRUNTIME_DISABLED_WARNINGS'
+  passThrough.c
+D:\Education\Education4\enc-EWDS\Program Files\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.31.31103\include\vcruntime.h(61,26): warning C4083: expected ')'; found identifier '_VCRUNTIME_DISABLED_WARNINGS'
+D:\Education\Education4\enc-EWDS\Program Files\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.31.31103\include\vcruntime.h(111,1): warning C4005: '_CRT_STRINGIZE': macro redefinition
+D:\Education\Education4\enc-EWDS\Program Files\Windows Kits\10\Include\10.0.22621.0\km\crt\crtdefs.h(85): message : see previous definition of '_CRT_STRINGIZE'
+D:\Education\Education4\enc-EWDS\Program Files\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.31.31103\include\vcruntime.h(114,1): warning C4005: '_CRT_WIDE': macro redefinition
+D:\Education\Education4\enc-EWDS\Program Files\Windows Kits\10\Include\10.0.22621.0\km\crt\crtdefs.h(88): message : see previous definition of '_CRT_WIDE'
+D:\Education\Education4\enc-EWDS\Program Files\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.31.31103\include\vcruntime.h(155,1): warning C4005: '__CRTDECL': macro redefinition
+D:\Education\Education4\enc-EWDS\Program Files\Windows Kits\10\Include\10.0.22621.0\km\crt\crtdefs.h(640): message : see previous definition of '__CRTDECL'
+D:\Education\Education4\enc-EWDS\Program Files\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.31.31103\include\stdint.h(16,26): warning C4083: expected ')'; found identifier '_VCRUNTIME_DISABLED_WARNINGS'
+D:\Education\Education4\enc\lab2\pT\passThrough.c(709,43): warning C4047: 'function': 'uint8_t *' differs in levels of indirection from 'unsigned char *[1024]'
+D:\Education\Education4\enc\lab2\pT\passThrough.c(709,35): warning C4024: 'AES_CBC_encrypt_buffer': different types for formal and actual parameter 2
+D:\Education\Education4\enc\lab2\pT\passThrough.c(890,43): warning C4047: 'function': 'uint8_t *' differs in levels of indirection from 'unsigned char *[1024]'
+D:\Education\Education4\enc\lab2\pT\passThrough.c(890,35): warning C4024: 'AES_CBC_decrypt_buffer': different types for formal and actual parameter 2
+  Generating Code...
+  passThrough.vcxproj -> D:\Education\Education4\enc\lab2\pt\x64\Debug\passThrough.sys
+  Done Adding Additional Store
+  Successfully signed: D:\Education\Education4\enc\lab2\pt\x64\Debug\passThrough.sys
+  
+  Driver is 'Universal'.
+  ........................
+  Signability test complete.
+  
+  Errors:
+  None
+  
+  Warnings:
+  None
+  
+  Catalog generation complete.
+  D:\Education\Education4\enc\lab2\pT\x64\Debug\passThrough\passthrough.cat
+  Done Adding Additional Store
+  Successfully signed: x64\Debug\passThrough\passthrough.cat
+  
