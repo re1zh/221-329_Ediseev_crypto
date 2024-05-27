@@ -1,0 +1,3 @@
+﻿  app.c
+C:\Users\user\Desktop\fold\ReadWriteFile\ReadWriteFile\app.c(38,33): warning C4267: функция: преобразование из "size_t" в "DWORD"; возможна потеря данных
+  ReadWriteFile.vcxproj -> C:\Users\user\Desktop\fold\ReadWriteFile\x64\Debug\ReadWriteFile.exe
