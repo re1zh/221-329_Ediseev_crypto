@@ -61,6 +61,63 @@ void MainWindow::handleButtonClick() {
             button->setStyleSheet("background-color: red");
         }
     }
+
+    QDateTime dateTime = QDateTime::currentDateTime();
+    QString dateTimeString = dateTime.toString("yyyy.MM.dd_hh:mm:ss");
+    QString data = QString::number(i) + QString::number(j) + dateTimeString;
+
+    QString prevHash = "";
+    if (totalClicks > 1) {
+        QFile file("moves.json");
+        if (file.open(QIODevice::ReadOnly)) {
+            QByteArray fileData = file.readAll();
+            file.close();
+            QJsonDocument doc = QJsonDocument::fromJson(fileData);
+            QJsonArray moves = doc.array();
+            QJsonObject lastMove = moves.last().toObject();
+            prevHash = lastMove["hash"].toString();
+            data += prevHash;
+        }
+    }
+
+    QString hash = calculateHash(data);
+
+    QJsonObject move;
+    move["i"] = i;
+    move["j"] = j;
+    move["datetime"] = dateTimeString;
+    move["hash"] = hash;
+    move["prev_hash"] = prevHash;
+
+    QFile file("moves.json");
+    if (file.open(QIODevice::ReadWrite)) {
+        QByteArray fileData = file.readAll();
+        QJsonDocument doc;
+        QJsonArray moves;
+        if (!fileData.isEmpty()) {
+            doc = QJsonDocument::fromJson(fileData);
+            moves = doc.array();
+        }
+        moves.append(move);
+        doc.setArray(moves);
+        file.resize(0);
+        file.write(doc.toJson());
+        file.close();
+    }
 }
 
 
+void MainWindow::resetGame() {
+    totalClicks = 0;
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            buttons[i][j]->setText("");
+            buttons[i][j]->setStyleSheet("");
+            clickCount[i][j] = 0;
+        }
+    }
+}
+
+void MainWindow::handleReset() {
+    resetGame();
+}
