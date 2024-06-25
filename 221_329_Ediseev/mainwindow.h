@@ -25,7 +25,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-
     QGridLayout *gridLayout;
     QPushButton *buttons[4][4];
     QPushButton *resetButton;
@@ -39,7 +38,9 @@ private:
     void resetGame();
     void loadGame();
     void saveGame();
-    void checkHashes(const QJsonArray &moves);
+    bool checkHashes(const QJsonArray &moves);
+
+    QString getLastMoveHash();
 };
 
 #endif // MAINWINDOW_H

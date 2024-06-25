@@ -60,30 +60,17 @@ void MainWindow::handleButtonClick() {
 
         QDateTime dateTime = QDateTime::currentDateTime();
         QString dateTimeString = dateTime.toString("yyyy.MM.dd_hh:mm:ss");
-        QString data = QString::number(i) + QString::number(j) + dateTimeString;
 
-        QString prevHash = "";
-        if (totalClicks > 1) {
-            QFile file("game.json");
-            if (file.open(QIODevice::ReadOnly)) {
-                QByteArray fileData = file.readAll();
-                file.close();
-                QJsonDocument doc = QJsonDocument::fromJson(fileData);
-                QJsonArray moves = doc.array();
-                QJsonObject lastMove = moves.last().toObject();
-                prevHash = lastMove["hash"].toString();
-                data += prevHash;
-            }
-        }
+        QString previousHash = getLastMoveHash();
 
-        QString hash = calculateHash(data);
+        QString data = QString::number(i) + QString::number(j) + dateTimeString + previousHash;
+        QString currentHash = calculateHash(data);
 
         QJsonObject move;
         move["i"] = i;
         move["j"] = j;
         move["datetime"] = dateTimeString;
-        move["hash"] = hash;
-        move["prev_hash"] = prevHash;
+        move["hash"] = currentHash;
 
         QFile file("moves.json");
         if (file.open(QIODevice::ReadWrite)) {
@@ -103,6 +90,12 @@ void MainWindow::handleButtonClick() {
     }
 }
 
+QString MainWindow::calculateHash(const QString &data) {
+    QCryptographicHash hash(QCryptographicHash::Sha256);
+    hash.addData(data.toUtf8());
+    return hash.result().toHex();
+}
+
 void MainWindow::resetGame() {
     totalClicks = 0;
     for (int i = 0; i < 4; ++i) {
@@ -118,6 +111,10 @@ void MainWindow::handleReset() {
     resetGame();
 }
 
+void MainWindow::handleLoad() {
+    loadGame();
+}
+
 void MainWindow::loadGame() {
     QFile file("moves.json");
     if (!file.open(QIODevice::ReadOnly)) {
@@ -131,7 +128,10 @@ void MainWindow::loadGame() {
     QJsonDocument doc = QJsonDocument::fromJson(fileData);
     QJsonArray moves = doc.array();
 
-    checkHashes(moves);
+    if (!checkHashes(moves)) {
+        QMessageBox::warning(this, "Ошибка", "Файл данных поврежден.");
+        return;
+    }
 
     resetGame();
 
@@ -148,29 +148,41 @@ void MainWindow::loadGame() {
     }
 }
 
-void MainWindow::handleLoad() {
-    loadGame();
-}
-
-
-QString MainWindow::calculateHash(const QString &data) {
-    QCryptographicHash hash(QCryptographicHash::Sha256);
-    hash.addData(data.toUtf8());
-    return hash.result().toHex();
-}
-
-
-void MainWindow::checkHashes(const QJsonArray &moves) {
+bool MainWindow::checkHashes(const QJsonArray &moves) {
+    QString previousHash = "";
     for (int k = 0; k < moves.size(); ++k) {
         QJsonObject move = moves[k].toObject();
-        QString data = QString::number(move["i"].toInt()) + QString::number(move["j"].toInt()) + move["datetime"].toString();
-        if (k > 0) {
-            data += moves[k - 1].toObject()["hash"].toString();
-        }
+        QString data = QString::number(move["i"].toInt()) +
+                       QString::number(move["j"].toInt()) +
+                       move["datetime"].toString() +
+                       previousHash;
+
         QString calculatedHash = calculateHash(data);
         if (calculatedHash != move["hash"].toString()) {
             QMessageBox::warning(this, "Ошибка", QString("Хеш-сумма не соответствует в ходе %1").arg(k + 1));
-            break;
+            return false;
+        }
+
+        previousHash = move["hash"].toString();
+    }
+
+    return true;
+}
+
+
+QString MainWindow::getLastMoveHash() {
+    QFile file("moves.json");
+    if (file.open(QIODevice::ReadOnly)) {
+        QByteArray fileData = file.readAll();
+        file.close();
+        if (!fileData.isEmpty()) {
+            QJsonDocument doc = QJsonDocument::fromJson(fileData);
+            QJsonArray moves = doc.array();
+            if (!moves.isEmpty()) {
+                QJsonObject lastMove = moves.last().toObject();
+                return lastMove["hash"].toString();
+            }
         }
     }
+    return "";
 }
