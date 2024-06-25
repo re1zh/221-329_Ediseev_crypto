@@ -40,3 +40,27 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow() {
     delete ui;
 }
+
+
+void MainWindow::handleButtonClick() {
+    QPushButton *button = qobject_cast<QPushButton*>(sender());
+    int i, j;
+    for (i = 0; i < 4; ++i) {
+        for (j = 0; j < 4; ++j) {
+            if (buttons[i][j] == button) break;
+        }
+        if (buttons[i][j] == button) break;
+    }
+
+    if (clickCount[i][j] == 0) {
+        totalClicks++;
+        clickCount[i][j] = totalClicks;
+        if (totalClicks % 2 == 0) {
+            button->setStyleSheet("background-color: green");
+        } else {
+            button->setStyleSheet("background-color: red");
+        }
+    }
+}
+
+
