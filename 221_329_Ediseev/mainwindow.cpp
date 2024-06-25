@@ -1,13 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
 #include <QFile>
 #include <QFileDialog>
 #include <QJsonDocument>
 #include <QMessageBox>
 #include <QDateTime>
 #include <QCryptographicHash>
-#include <QJsonArray>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), totalClicks(0) {
@@ -41,7 +39,6 @@ MainWindow::~MainWindow() {
     delete ui;
 }
 
-
 void MainWindow::handleButtonClick() {
     QPushButton *button = qobject_cast<QPushButton*>(sender());
     int i, j;
@@ -60,52 +57,51 @@ void MainWindow::handleButtonClick() {
         } else {
             button->setStyleSheet("background-color: red");
         }
-    }
 
-    QDateTime dateTime = QDateTime::currentDateTime();
-    QString dateTimeString = dateTime.toString("yyyy.MM.dd_hh:mm:ss");
-    QString data = QString::number(i) + QString::number(j) + dateTimeString;
+        QDateTime dateTime = QDateTime::currentDateTime();
+        QString dateTimeString = dateTime.toString("yyyy.MM.dd_hh:mm:ss");
+        QString data = QString::number(i) + QString::number(j) + dateTimeString;
 
-    QString prevHash = "";
-    if (totalClicks > 1) {
+        QString prevHash = "";
+        if (totalClicks > 1) {
+            QFile file("game.json");
+            if (file.open(QIODevice::ReadOnly)) {
+                QByteArray fileData = file.readAll();
+                file.close();
+                QJsonDocument doc = QJsonDocument::fromJson(fileData);
+                QJsonArray moves = doc.array();
+                QJsonObject lastMove = moves.last().toObject();
+                prevHash = lastMove["hash"].toString();
+                data += prevHash;
+            }
+        }
+
+        QString hash = calculateHash(data);
+
+        QJsonObject move;
+        move["i"] = i;
+        move["j"] = j;
+        move["datetime"] = dateTimeString;
+        move["hash"] = hash;
+        move["prev_hash"] = prevHash;
+
         QFile file("moves.json");
-        if (file.open(QIODevice::ReadOnly)) {
+        if (file.open(QIODevice::ReadWrite)) {
             QByteArray fileData = file.readAll();
+            QJsonDocument doc;
+            QJsonArray moves;
+            if (!fileData.isEmpty()) {
+                doc = QJsonDocument::fromJson(fileData);
+                moves = doc.array();
+            }
+            moves.append(move);
+            doc.setArray(moves);
+            file.resize(0);
+            file.write(doc.toJson());
             file.close();
-            QJsonDocument doc = QJsonDocument::fromJson(fileData);
-            QJsonArray moves = doc.array();
-            QJsonObject lastMove = moves.last().toObject();
-            prevHash = lastMove["hash"].toString();
-            data += prevHash;
         }
-    }
-
-    QString hash = calculateHash(data);
-
-    QJsonObject move;
-    move["i"] = i;
-    move["j"] = j;
-    move["datetime"] = dateTimeString;
-    move["hash"] = hash;
-    move["prev_hash"] = prevHash;
-
-    QFile file("moves.json");
-    if (file.open(QIODevice::ReadWrite)) {
-        QByteArray fileData = file.readAll();
-        QJsonDocument doc;
-        QJsonArray moves;
-        if (!fileData.isEmpty()) {
-            doc = QJsonDocument::fromJson(fileData);
-            moves = doc.array();
-        }
-        moves.append(move);
-        doc.setArray(moves);
-        file.resize(0);
-        file.write(doc.toJson());
-        file.close();
     }
 }
-
 
 void MainWindow::resetGame() {
     totalClicks = 0;
@@ -120,4 +116,61 @@ void MainWindow::resetGame() {
 
 void MainWindow::handleReset() {
     resetGame();
+}
+
+void MainWindow::loadGame() {
+    QFile file("moves.json");
+    if (!file.open(QIODevice::ReadOnly)) {
+        QMessageBox::warning(this, "Ошибка", "Не удалось открыть файл");
+        return;
+    }
+
+    QByteArray fileData = file.readAll();
+    file.close();
+
+    QJsonDocument doc = QJsonDocument::fromJson(fileData);
+    QJsonArray moves = doc.array();
+
+    checkHashes(moves);
+
+    resetGame();
+
+    for (int k = 0; k < moves.size(); ++k) {
+        QJsonObject move = moves[k].toObject();
+        int i = move["i"].toInt();
+        int j = move["j"].toInt();
+        clickCount[i][j] = k + 1;
+        if (clickCount[i][j] % 2 == 0) {
+            buttons[i][j]->setStyleSheet("background-color: green");
+        } else {
+            buttons[i][j]->setStyleSheet("background-color: red");
+        }
+    }
+}
+
+void MainWindow::handleLoad() {
+    loadGame();
+}
+
+
+QString MainWindow::calculateHash(const QString &data) {
+    QCryptographicHash hash(QCryptographicHash::Sha256);
+    hash.addData(data.toUtf8());
+    return hash.result().toHex();
+}
+
+
+void MainWindow::checkHashes(const QJsonArray &moves) {
+    for (int k = 0; k < moves.size(); ++k) {
+        QJsonObject move = moves[k].toObject();
+        QString data = QString::number(move["i"].toInt()) + QString::number(move["j"].toInt()) + move["datetime"].toString();
+        if (k > 0) {
+            data += moves[k - 1].toObject()["hash"].toString();
+        }
+        QString calculatedHash = calculateHash(data);
+        if (calculatedHash != move["hash"].toString()) {
+            QMessageBox::warning(this, "Ошибка", QString("Хеш-сумма не соответствует в ходе %1").arg(k + 1));
+            break;
+        }
+    }
 }
